@@ -1,175 +1,76 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BJK. Portfolio</title>
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+  <body>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Virtual Fitting Room</title>
-    <meta name="description" content="Virtual Fitting Room made for TECH3010" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <style>
-    .loading {
-        position: fixed;
-        z-index: 50;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background: #f1f1f1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transform: translateZ(1px);
-    }
+    <header>
+      <h1 class="logo"><a href="index.html">BJK.</a></h1>
+      <div class="menu" id="menu-toggle"><img id="cross" src="images/cross.svg" alt="Menu cross"></div>
+        <nav id="menu-nav">
+          <a href="index.html">Portfolio</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+    </header>
 
+    <div id="dropdown" class="dropdown"></div>
+    <div id="dim-background"></div>
 
-    .loader::before {
-        content: "";
-        margin: 8px;
-        width: 64px;
-        height: 64px;
-        border-radius: 50%;
-        background-color: blue;
-        animation: flip 1s infinite;   
-        display: inline-block;
-    }
-
-    @keyframes flip {
-        0%, 100% {
-    animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
-    }
-        0% {
-            transform: rotateY(0deg);
-        }
-
-        50% {
-            transform: rotateY(1800deg);
-            animation-timing-function: cubic-bezier(0, 0.5, 0.5, 1);
-        }
-
-        100% {
-            transform: rotateY(3600deg);
-        }
-    }
-    </style>
-</head>
-
-<body>
-    <!-- The loading element overlays all else until the model is loaded, at which point we remove this element from the DOM -->
-    <div class="loading" id="js-loader">
-        <div class="loader"></div>
-    </div>
-    <!-- Just a quick notice to the user that it can be interacted with -->
-    <span class="drag-notice" id="js-drag-notice">Drag to rotate 360&#176;</span>
-    <div class="options">
-        <div class="option-container">
-            <div class="option --is-active" data-option="Jacket">
-                <img src="img/jacket.svg" alt="" />
-            </div>
-            <div class="toggle-button">
-                <img src="img/visibility.svg" alt="" id="toggleJacket"/>
-            </div>
-        </div>
-        <div class="option-container">
-            <div class="option" data-option="Short_sleeve_Shirt">
-                <img src="img/shirt.svg" alt="" />
-            </div>
-            <div class="toggle-button">
-                <img src="img/visibility.svg" alt="" id="toggleShortSleeve"/>
-            </div>
-        </div>
-        <div class="option-container">
-            <div class="option" data-option="Glove">
-                <img src="img/gloves.svg" alt="" />
-            </div>
-            <div class="toggle-button">
-                <img src="img/visibility.svg" alt="" id="toggleGlove"/>
-            </div>
-        </div>
-        <div class="option-container">
-            <div class="option" data-option="Long_Pant">
-                <img src="img/pants.svg" alt="" />
-            </div>
-            <div class="toggle-button">
-                <img src="img/visibility.svg" alt="" id="togglePants"/>
-            </div>
-        </div>
-        <div class="option-container">
-            <div class="option" data-option="Belt">
-                <img src="img/belt.svg" alt="" />
-            </div>
-            <div class="toggle-button">
-                <img src="img/visibility.svg" alt="" id="toggleBelt"/>
-            </div>
-        </div>
-        <div class="option-container">
-            <div class="option" data-option="Shoes">
-                <img src="img/shoe.svg" alt="" />
-            </div>
-            <div class="toggle-button">
-                <img src="img/visibility.svg" alt="" id="toggleShoes"/>
-            </div>
-        </div>
+    <div class="info" id="info">
+      <h2>BJK. is a photographer, designer and motion graphics creator from Krakow, Poland.</h2>
+      <h3> This is a portfolio website. </h3>
     </div>
 
-    <div class="background-container">
-        <div class="option" id="plain">
-            <img src="img/no-background.svg" alt="" />
-        </div>
-        <div class="option" id="city">
-            <img src="img/city.svg" alt="" />
-        </div>
-        <div class="option" id="forest">
-            <img src="img/forest.svg" alt="" />
-        </div>
-        <div class="option" id="night">
-            <img src="img/night.svg" alt="" />
-        </div>
-    </div>
-  
-    <!-- The canvas element is used to draw the 3D scene -->
-    <canvas id="c"></canvas>
-    <div class="controls">
-        <div id="js-tray" class="tray">
-            <div id="js-tray-slide" class="tray__slide"></div>
-        </div>
-    </div>
-    <div class="frame">
-        <h1 class="frame-title" id="title">Virtual Fitting Room</h1>
-        <div class="help-icon" id="helpButton">
-            <img src="img/help.svg" alt="" />
-        </div>
-    </div>
-    
-    <div id="helpMessage" class="help">
-        <div class="help-content">
-            <div class="modal-header">
-                <h1>What is a virtual fitting room?</h1>
-            </div>
-              <div class="modal-body">
-                <h3>Virtual fitting room is an online shopping companion that gives customers ability to see clothes in 3D and customize their colours. </h3>
-                <div class="help-options">
-                    <p>On the left, you can choose which item of clothing to customize. You can hide an unwanted item by clicking the eye icon.</p>
-                    <p>On the right, you can change the background image to see how your outfits would look in different situations
-                    </p>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <h3>You can rotate, zoom and drag the model. </h3>
-              </div>
-              <span class="close">Got It!</span>
-        </div>
-      
-      </div>
-    <!-- The main three.js file -->
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/108/three.min.js'></script>
-    <!-- This brings in the ability to load custom 3D objects in the .gltf file format. Blender allows the ability to export to this format out the box -->
-    <script src='https://cdn.jsdelivr.net/gh/mrdoob/three.js@r92/examples/js/loaders/GLTFLoader.js'></script>
-    <!-- This is a simple to use extension for three.js that activates all the rotating, dragging and zooming controls we need for both mouse and touch, there isn't a clear CDN for this that I can find -->
-    <script src='https://threejs.org/examples/js/controls/OrbitControls.js'></script>
-    <script src="script.js"></script>
-</body>
+    <main id="maincontent">
 
+      <section>
+        <a href="mathreska.html">
+          <img src="images/mathreshka/matreshkaBaner.png" alt="Mathreska Project">
+          <h2><span>Mathreska</span></h2>
+        </a>
+      </section>
+
+      <section>
+        <a href="conart.html">
+          <img src="images/conart/conartbanner.png" alt="ConArt Museum">
+          <h2><span>ConArt Museum</span></h2>
+       </a>
+      </section>
+
+     <section>
+       <a href="zwierzyniec.html">
+         <img src="images/zwierzyniec/zwierzyniecBaner.png" alt="Zwierzyniec Browar Polski">
+         <h2><span>Zwierzyniec</span></h2>
+       </a>
+     </section>
+
+     <section>
+       <a href="popo.html">
+         <img src="images/popo/popoBanner.png" alt="PoPo Cosmetics">
+         <h2><span>PoPo Cosmetics</span></h2>
+      </a>
+     </section>
+
+     <section>
+       <a href="petrichor.html">
+         <img src="images/petrichor/petrichorbaner.png" alt="Petrichor TV Show">
+         <h2><span>Petrichor</span></h2>
+      </a>
+     </section>
+
+    </main>
+
+    <footer>
+      <p>BJK. Branding & Design 2019</p>
+      <div id="back-to-top" class="backButton">&#10514; Top</div>
+    </footer>
+
+    <script src="js/scripts.js"></script>
+  </body>
 </html>
