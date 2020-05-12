@@ -113,14 +113,10 @@ const colors = [
 
 
 const BACKGROUND_COLOR = 0xffffff;
-// Init the scene
 const scene = new THREE.Scene();
-// Set background
 scene.background = new THREE.Color(BACKGROUND_COLOR);
 
 const canvas = document.querySelector('#c');
-
-// Init the renderer
 const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
 
 renderer.shadowMap.enabled = true;
@@ -130,13 +126,13 @@ var cameraFar = 3.5;
 
 document.body.appendChild(renderer.domElement);
 
-// Add a camerra
 var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = cameraFar;
 camera.position.x = 0;
 
-// Initial material
 const INITIAL_MTL = new THREE.MeshPhongMaterial({ color: 0xf1f1f1, shininess: 10 });
+
+//Get separate parts of the model
 
 const INITIAL_MAP = [
 { childID: "Body", mtl: INITIAL_MTL },
@@ -151,7 +147,7 @@ const INITIAL_MAP = [
 { childID: "Shoes", mtl: INITIAL_MTL }];
 
 
-// Init the object loader
+//Start loader
 var loader = new THREE.GLTFLoader();
 
 loader.load(MODEL_PATH, function (gltf) {
@@ -164,14 +160,12 @@ loader.load(MODEL_PATH, function (gltf) {
     }
   });
 
-  // Set the models initial scale   
+  //Scale and position of the model  
   theModel.scale.set(0.5, 0.5, 0.5);
   theModel.rotation.y = Math.PI;
-
-  // Offset the y position a bit
   theModel.position.y = -1.2;
 
-  // Set initial textures
+  
   for (let object of INITIAL_MAP) {
     initColor(theModel, object.childID, object.mtl);
   }
@@ -186,44 +180,36 @@ loader.load(MODEL_PATH, function (gltf) {
   console.error(error);
 });
 
-// Function - Add the textures to the models
+//Add texture to the model
 function initColor(parent, type, mtl) {
   parent.traverse(o => {
     if (o.isMesh) {
       if (o.name.includes(type)) {
         o.material = mtl;
-        o.nameID = type; // Set a new property to identify this object
+        o.nameID = type;
       }
     }
   });
 }
 
-// Add lights
+//Lights
 var hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
 hemiLight.position.set(0, 0, 0);
-// Add hemisphere light to scene   
 scene.add(hemiLight);
-
-// Add directional Light to scene  
 var dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
 dirLight.position.set(-8, 12, 8);
 dirLight.castShadow = true;
 scene.add(dirLight);
 
-// Floor
+// \Floor
 var floorGeometry = new THREE.PlaneGeometry(5000, 5000, 1, 1);
 var floorMaterial = new THREE.MeshPhongMaterial({
   color: 0xeeeeee,
   shininess: 0 });
 
 
-// var floor = new THREE.Mesh(floorGeometry, floorMaterial);
-// floor.rotation.x = -0.5 * Math.PI;
-// floor.receiveShadow = true;
-// floor.position.y = -1;
-// scene.add(floor);
 
-// Add controls
+//Control model
 var controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.maxPolarAngle = Math.PI / 2;
 controls.minPolarAngle = Math.PI / 5;
@@ -253,7 +239,7 @@ function animate() {
 
 animate();
 
-// Function - New resizing method
+//Resize canvas
 function resizeRendererToDisplaySize(renderer) {
   const canvas = renderer.domElement;
   var width = window.innerWidth;
@@ -269,7 +255,7 @@ function resizeRendererToDisplaySize(renderer) {
   return needResize;
 }
 
-// Function - Build Colors
+//Make colours
 
 function buildColors(colors) {
   for (let [i, color] of colors.entries()) {
@@ -291,7 +277,7 @@ function buildColors(colors) {
 
 buildColors(colors);
 
-// Select Option
+//Select clothes
 const options = document.querySelectorAll(".option");
 
 for (const option of options) {
@@ -307,7 +293,7 @@ function selectOption(e) {
   option.classList.add('--is-active');
 }
 
-// Swatches
+//Colours
 const swatches = document.querySelectorAll(".tray__swatch");
 
 for (const swatch of swatches) {
@@ -353,7 +339,7 @@ function setMaterial(parent, type, mtl) {
   });
 }
 
-// Function - Opening rotate
+//Rotate on open
 let initRotate = 0;
 
 function initialRotation() {
@@ -366,7 +352,7 @@ function initialRotation() {
 }
 
 
-// Functions that toggles visibility of clothing items
+//Visibility of clothing items
 
 var JacketVisible = true;
 
@@ -608,26 +594,19 @@ NightButton.addEventListener('click', function(){
 });
 
 
-// Get the modal
+//Open help message
 var help = document.getElementById("helpMessage");
-
-// Get the button that opens the modal
 var helpBtn = document.getElementById("helpButton");
-
-// Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks on the button, open the modal
 helpBtn.onclick = function() {
   help.style.display = "block";
 }
 
-// When the user clicks on <span> (x), close the modal
 span.onclick = function() {
   help.style.display = "none";
 }
 
-// When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == help) {
     help.style.display = "none";

@@ -57,7 +57,6 @@
 </head>
 
 <body>
-    <!-- The loading element overlays all else until the model is loaded, at which point we remove this element from the DOM -->
     <div class="loading" id="js-loader">
         <div class="loader"></div>
     </div>
@@ -127,7 +126,6 @@
         </div>
     </div>
   
-    <!-- The canvas element is used to draw the 3D scene -->
     <canvas id="c"></canvas>
     <div class="controls">
         <div id="js-tray" class="tray">
@@ -143,10 +141,10 @@
     
     <div id="helpMessage" class="help">
         <div class="help-content">
-            <div class="modal-header">
+            <div class="help-header">
                 <h1>What is a virtual fitting room?</h1>
             </div>
-              <div class="modal-body">
+              <div class="help-body">
                 <h3>Virtual fitting room is an online shopping companion that gives customers ability to see clothes in 3D and customize their colours. </h3>
                 <div class="help-options">
                     <p>On the left, you can choose which item of clothing to customize. You can hide an unwanted item by clicking the eye icon.</p>
@@ -154,18 +152,15 @@
                     </p>
                 </div>
               </div>
-              <div class="modal-footer">
+              <div class="help-footer">
                 <h3>You can rotate, zoom and drag the model. </h3>
               </div>
               <span class="close">Got It!</span>
         </div>
       
       </div>
-    <!-- The main three.js file -->
     <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/108/three.min.js'></script>
-    <!-- This brings in the ability to load custom 3D objects in the .gltf file format. Blender allows the ability to export to this format out the box -->
     <script src='https://cdn.jsdelivr.net/gh/mrdoob/three.js@r92/examples/js/loaders/GLTFLoader.js'></script>
-    <!-- This is a simple to use extension for three.js that activates all the rotating, dragging and zooming controls we need for both mouse and touch, there isn't a clear CDN for this that I can find -->
     <script src='https://threejs.org/examples/js/controls/OrbitControls.js'></script>
     <script src="script.js"></script>
 </body>
